@@ -9,6 +9,7 @@ import com.zorzi.backend.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
         User user = User.builder()
                 .username(request.getUsername())
@@ -30,6 +32,7 @@ public class UserService {
         return new AuthResponse(jwt);
     }
 
+    @Transactional(readOnly = true)
     public AuthResponse login(RegisterRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Utente non trovato"));

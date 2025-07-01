@@ -32,6 +32,7 @@ public class User implements UserDetails {
     private Role role;
 
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     @Column(columnDefinition = "TEXT")
     private String storyState;
 
@@ -39,8 +40,9 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> role.name());
+        return List.of(role);
     }
+
 
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() { return true; }
