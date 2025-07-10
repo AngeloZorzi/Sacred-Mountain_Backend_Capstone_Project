@@ -1,5 +1,6 @@
 package com.zorzi.backend.controller;
 
+import com.zorzi.backend.model.StoryState;
 import com.zorzi.backend.model.User;
 import com.zorzi.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class AdminController {
     public ResponseEntity<?> resetUser(@PathVariable Long id, @RequestBody ResetRequest request) {
         return userRepository.findById(id).map(user -> {
             if (request.resetScore()) user.setScore(0);
-            if (request.resetStory()) user.setStoryState("");
+            if (request.resetStory()) user.setStoryState(new StoryState());
             userRepository.save(user);
             return ResponseEntity.ok().build();
         }).orElse(ResponseEntity.notFound().build());
