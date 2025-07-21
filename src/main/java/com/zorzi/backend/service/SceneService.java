@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -112,6 +113,9 @@ public class SceneService {
         dto.title = scene.getTitle();
         dto.text = scene.getText();
         dto.imageUrl = scene.getImageUrl();
+        dto.backgroundMusic = scene.getBackgroundMusic();
+        dto.animationType = scene.getAnimationType();
+
 
         dto.choices = scene.getChoices().stream().map(choice -> {
             ChoiceDTO cdto = new ChoiceDTO();
@@ -126,4 +130,23 @@ public class SceneService {
 
         return dto;
     }
+
+    public Scene patchScene(Long id, Map<String, Object> updates) {
+        Scene scene = sceneRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Scene not found"));
+
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "title" -> scene.setTitle((String) value);
+                case "text" -> scene.setText((String) value);
+                case "imageUrl" -> scene.setImageUrl((String) value);
+                case "backgroundMusic" -> scene.setBackgroundMusic((String) value);
+                case "animationType" -> scene.setAnimationType((String) value);
+                case "isFinale" -> scene.setFinale(Boolean.parseBoolean(value.toString()));
+            }
+        });
+
+        return sceneRepository.save(scene);
+    }
+
 }

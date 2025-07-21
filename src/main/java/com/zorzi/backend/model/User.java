@@ -32,6 +32,10 @@ public class User implements UserDetails {
     @Column
     private java.time.Instant lastSceneChange;
 
+    @Column
+    private Long lastSceneId;
+
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;

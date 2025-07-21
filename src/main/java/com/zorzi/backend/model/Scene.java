@@ -1,5 +1,6 @@
 package com.zorzi.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,14 @@ public class Scene {
     private String backgroundMusic;
     @Column(columnDefinition = "TEXT")
     private String animationType;
+    @Column
+    private Boolean isFinale = false;
+
 
     @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Choice> choices = new ArrayList<>();
+
 
 
     public Scene() {}
@@ -36,6 +42,7 @@ public class Scene {
         this.backgroundMusic = backgroundMusic;
         this.animationType = animationType;
         this.choices = choices;
+        this.isFinale = isFinale;
     }
 
 
@@ -93,5 +100,13 @@ public class Scene {
 
     public void setChoices(List<Choice> choices) {
         this.choices = choices;
+    }
+
+    public Boolean getFinale() {
+        return isFinale;
+    }
+
+    public void setFinale(Boolean finale) {
+        isFinale = finale;
     }
 }

@@ -47,4 +47,13 @@ public class StoryState {
         if (value instanceof String s) return Boolean.parseBoolean(s);
         return false;
     }
+
+    public String getExtraAsString(String key) {
+        Object value = extra.get(key);
+        return value != null ? value.toString() : null;
+    }
+
+    public void setExtra(String key, Object value) {
+        this.extra.put(key, value);
+    }
 }

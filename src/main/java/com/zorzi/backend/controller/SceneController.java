@@ -1,11 +1,13 @@
 package com.zorzi.backend.controller;
 
 import com.zorzi.backend.dto.SceneDTO;
+import com.zorzi.backend.model.Scene;
 import com.zorzi.backend.service.SceneService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/scenes")
@@ -45,6 +47,13 @@ public class SceneController {
         SceneDTO updated = sceneService.updateScene(id, dto);
         return ResponseEntity.ok(updated);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<SceneDTO> patchScene(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+        Scene scene = sceneService.patchScene(id, updates);
+        return ResponseEntity.ok(sceneService.getSceneById(scene.getId()));
+    }
+
 
 }
 

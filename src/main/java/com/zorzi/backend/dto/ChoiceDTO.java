@@ -6,6 +6,7 @@ public class ChoiceDTO {
     public Long id;
     public String text;
     public Long nextSceneId;
+    public Long sceneId;
     public Integer scoreChange = 0;
     public Integer availableAfterSeconds;
     public List<String> requiredFlags;

@@ -1,9 +1,12 @@
 package com.zorzi.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.zorzi.backend.config.FlagChangesConverter;
 import com.zorzi.backend.config.StringListConverter;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "choices")
@@ -17,7 +20,9 @@ public class Choice {
 
     @ManyToOne
     @JoinColumn(name = "scene_id")
+    @JsonBackReference
     private Scene scene;
+
 
     @ManyToOne
     @JoinColumn(name = "next_scene_id")
@@ -33,16 +38,22 @@ public class Choice {
     @Column(columnDefinition = "TEXT")
     private List<String> requiredFlags;
 
+    @Column(columnDefinition = "TEXT")
+    @Convert(converter = FlagChangesConverter.class)
+    private Map<String, Object> flagChanges;
+
+
 
     public Choice() {}
 
-    public Choice(Long id, String text, Scene scene, Scene nextScene, Integer availableAfterSeconds, List<String> requiredFlags) {
+    public Choice(Long id, String text, Scene scene, Scene nextScene, Integer availableAfterSeconds, List<String> requiredFlags, Map<String, Object> flagChanges) {
         this.id = id;
         this.text = text;
         this.scene = scene;
         this.nextScene = nextScene;
         this.availableAfterSeconds = availableAfterSeconds;
         this.requiredFlags = requiredFlags;
+        this.flagChanges = flagChanges;
     }
 
 
@@ -67,4 +78,12 @@ public class Choice {
 
     public List<String> getRequiredFlags() { return requiredFlags; }
     public void setRequiredFlags(List<String> requiredFlags) { this.requiredFlags = requiredFlags; }
+
+    public Map<String, Object> getFlagChanges() {
+        return flagChanges;
+    }
+
+    public void setFlagChanges(Map<String, Object> flagChanges) {
+        this.flagChanges = flagChanges;
+    }
 }

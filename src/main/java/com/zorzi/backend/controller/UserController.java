@@ -25,6 +25,7 @@ public class UserController {
                 .orElseThrow(() -> new RuntimeException("Utente non trovato"));
 
         return ResponseEntity.ok(new UserResponse(
+                user.getId(),
                 user.getUsername(),
                 user.getRole(),
                 user.getScore(),
@@ -57,7 +58,7 @@ public class UserController {
         return ResponseEntity.ok(leaderboard);
     }
 
-    private record UserResponse(String username, Enum role, Integer score, StoryState storyState) {}
+    private record UserResponse(Long id, String username, Enum role, Integer score, StoryState storyState) {}
     private record ProgressRequest(StoryState storyState, Integer score) {}
     private record LeaderboardEntry(String username, Integer score) {}
 }

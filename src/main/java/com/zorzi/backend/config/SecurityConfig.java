@@ -35,9 +35,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/game/**").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/api/game/**").hasAnyAuthority("PLAYER", "ADMIN")
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/scenes/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/choice").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
