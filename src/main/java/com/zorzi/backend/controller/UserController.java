@@ -29,7 +29,8 @@ public class UserController {
                 user.getUsername(),
                 user.getRole(),
                 user.getScore(),
-                user.getStoryState()
+                user.getStoryState(),
+                user.getLastSceneId()
         ));
     }
 
@@ -58,7 +59,8 @@ public class UserController {
         return ResponseEntity.ok(leaderboard);
     }
 
-    private record UserResponse(Long id, String username, Enum role, Integer score, StoryState storyState) {}
+    private record UserResponse(Long id, String username, Enum role, Integer score, StoryState storyState,
+                                Long lastSceneId) {}
     private record ProgressRequest(StoryState storyState, Integer score) {}
     private record LeaderboardEntry(String username, Integer score) {}
 }

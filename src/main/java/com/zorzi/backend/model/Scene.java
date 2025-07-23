@@ -23,7 +23,7 @@ public class Scene {
     @Column(columnDefinition = "TEXT")
     private String animationType;
     @Column
-    private Boolean isFinale = false;
+    public Boolean isFinale = false;
 
 
     @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
@@ -34,7 +34,7 @@ public class Scene {
 
     public Scene() {}
 
-    public Scene(Long id, String title, String text, String imageUrl, String backgroundMusic, String animationType, List<Choice> choices) {
+    public Scene(Long id, String title, String text, String imageUrl, String backgroundMusic, String animationType, List<Choice> choices, Boolean isFinale) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -102,11 +102,11 @@ public class Scene {
         this.choices = choices;
     }
 
-    public Boolean getFinale() {
+    public Boolean getIsFinale() {
         return isFinale;
     }
 
-    public void setFinale(Boolean finale) {
-        isFinale = finale;
+    public void setIsFinale(Boolean isFinale) {
+        this.isFinale = isFinale;
     }
 }

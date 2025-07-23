@@ -134,17 +134,12 @@ public class GameService {
 
         Instant now = Instant.now();
         Instant lastChange = user.getLastSceneChange();
-
-        System.out.println("DEBUG: now = " + now);
-        System.out.println("DEBUG: lastChange = " + lastChange);
-        System.out.println("DEBUG: seconds elapsed = " + (lastChange != null ? now.getEpochSecond() - lastChange.getEpochSecond() : "null"));
-
         StoryState storyState = user.getStoryState();
         if (storyState == null) {
             storyState = new StoryState();
         }
 
-        if (storyState.getFlagAsBoolean("corvoPresente", true) && hasElapsed(lastChange, 60)) {
+        if (storyState.getFlagAsBoolean("corvoPresente", true) && hasElapsed(lastChange, 30)) {
             storyState.setFlag("corvoPresente", false);
             user.setStoryState(storyState);
             userRepository.save(user);
@@ -159,7 +154,6 @@ public class GameService {
         dto.choices = dto.choices.stream()
                 .filter(c -> {
                     if (c.text.equalsIgnoreCase("Segui il corvo.") && !isCorvoPresente) {
-                        System.out.println("DEBUG: filtro 'Segui il corvo.' escluso per corvoPresente=false");
                         return false;
                     }
                     return true;
@@ -167,28 +161,22 @@ public class GameService {
                 .filter(c -> {
                     if (c.availableAfterSeconds == null) return true;
                     if (finalLastChange == null) {
-                        System.out.println("DEBUG: filtro delay scelta " + c.text + " esclusa per lastChange null");
                         return false;
                     }
                     long elapsed = now.getEpochSecond() - finalLastChange.getEpochSecond();
                     boolean available = elapsed >= c.availableAfterSeconds;
-                    System.out.println("DEBUG: scelta '" + c.text + "' delay=" + c.availableAfterSeconds + ", elapsed=" + elapsed + ", disponibile=" + available);
                     return available;
                 })
                 .filter(c -> {
                     if (c.requiredFlags == null || c.requiredFlags.isEmpty()) return true;
                     for (String flag : c.requiredFlags) {
                         if (!finalStoryState.getFlagAsBoolean(flag, false)) {
-                            System.out.println("DEBUG: filtro flag scelta " + c.text + " esclusa per flag mancante: " + flag);
                             return false;
                         }
                     }
                     return true;
                 })
                 .toList();
-
-        System.out.println("DEBUG: scelte filtrate: " + dto.choices.size());
-
         return dto;
     }
 
@@ -203,6 +191,7 @@ public class GameService {
         dto.backgroundMusic = scene.getBackgroundMusic();
         dto.animationType = scene.getAnimationType();
         dto.lastSceneChange = user.getLastSceneChange();
+        dto.isFinale =scene.getIsFinale();
 
         dto.choices = scene.getChoices().stream().map(choice -> {
             ChoiceDTO cdto = new ChoiceDTO();

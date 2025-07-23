@@ -1,5 +1,7 @@
 package com.zorzi.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.Instant;
 import java.util.List;
 
@@ -12,4 +14,6 @@ public class SceneDTO {
     public String backgroundMusic;
     public String animationType;
     public Instant lastSceneChange;
+    @JsonProperty("isFinale")
+    public Boolean isFinale;
 }

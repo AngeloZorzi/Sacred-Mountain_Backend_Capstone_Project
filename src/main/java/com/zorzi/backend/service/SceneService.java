@@ -80,6 +80,7 @@ public class SceneService {
         scene.setText(dto.text);
         scene.setImageUrl(dto.imageUrl);
 
+
         choiceRepository.deleteAll(scene.getChoices());
         scene.getChoices().clear();
 
@@ -115,6 +116,7 @@ public class SceneService {
         dto.imageUrl = scene.getImageUrl();
         dto.backgroundMusic = scene.getBackgroundMusic();
         dto.animationType = scene.getAnimationType();
+        dto.isFinale = scene.getIsFinale();
 
 
         dto.choices = scene.getChoices().stream().map(choice -> {
@@ -142,7 +144,7 @@ public class SceneService {
                 case "imageUrl" -> scene.setImageUrl((String) value);
                 case "backgroundMusic" -> scene.setBackgroundMusic((String) value);
                 case "animationType" -> scene.setAnimationType((String) value);
-                case "isFinale" -> scene.setFinale(Boolean.parseBoolean(value.toString()));
+                case "isFinale" -> scene.setIsFinale(Boolean.parseBoolean(value.toString()));
             }
         });
 
